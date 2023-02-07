@@ -1,0 +1,37 @@
+rdp code
+
+nama: CI
+
+aktif: [push, workflow_dispatch]
+
+pekerjaan:
+
+  membangun:
+
+    run-on: windows-terbaru
+
+    Langkah:
+
+    - nama: Unduh
+
+      jalankan: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+
+    - nama: ekstrak
+
+      jalankan: Perluas-Arsipkan ngrok.zip
+
+    - nama: Auth
+
+      jalankan: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+
+      env:
+
+        NGROK_AUTH_TOKEN: ${{ rahasia.NGROK_AUTH_TOKEN }}
+
+    - nama: Aktifkan TS
+
+      jalankan: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Nilai 0
+
+    - jalankan: Aktifkan-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+    - jalankan: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -nama "UserAuthentication" -Nilai 1
